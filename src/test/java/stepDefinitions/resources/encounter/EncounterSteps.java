@@ -1,4 +1,4 @@
-package stepDefinitions;
+package stepDefinitions.resources.encounter;
 
 import hooks.Hooks;
 import io.cucumber.java.en.And;
@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import pageObjects.EncounterPage;
+import pageObjects.resources.encounter.EncounterPage;
 
 import java.time.Duration;
 import java.util.List;
@@ -47,7 +47,7 @@ public class EncounterSteps {
         Assert.assertTrue("The Encounter list should not be empty", rows.size() > 0); // Mengecek apakah jumlah elemen di dalam rows lebih dari 0, yang berarti tabel Encounter berisi setidaknya satu baris
 
         String encounterId = encounterPage.getEncounterIdFromFirstRow();
-        Assert.assertEquals("230917.093", encounterId);
+        Assert.assertEquals("ENCOUNTER.162", encounterId); // jika ada error ketika run code nya, ganti expected result nya sesuai row pertama tabel encounter
 
         Thread.sleep(5000);
     }
