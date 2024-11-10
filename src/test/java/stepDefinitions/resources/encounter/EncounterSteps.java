@@ -47,9 +47,9 @@ public class EncounterSteps {
         Assert.assertTrue("The Encounter list should not be empty", rows.size() > 0); // Mengecek apakah jumlah elemen di dalam rows lebih dari 0, yang berarti tabel Encounter berisi setidaknya satu baris
 
         String encounterId = encounterPage.getEncounterIdFromFirstRow();
-        Assert.assertEquals("ENCOUNTER.162", encounterId); // jika ada error ketika run code nya, ganti expected result nya sesuai row pertama tabel encounter
+        Assert.assertEquals("ENCOUNTER.193", encounterId); // jika ada error ketika run code nya, ganti expected result nya sesuai row pertama tabel encounter
 
-        Thread.sleep(5000);
+        Thread.sleep(2000);
     }
 
 }
