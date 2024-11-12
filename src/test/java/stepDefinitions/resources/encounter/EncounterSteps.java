@@ -5,6 +5,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -45,9 +46,14 @@ public class EncounterSteps {
     public void userSeesTheListOfEncounter() throws InterruptedException {
         List<WebElement> rows = encounterPage.getEncounterTableRows(); // Mengambil salah satu daftar baris dalam tabel dan menginisialisasi ke variable rows
         Assert.assertTrue("The Encounter list should not be empty", rows.size() > 0); // Mengecek apakah jumlah elemen di dalam rows lebih dari 0, yang berarti tabel Encounter berisi setidaknya satu baris
+        int expectedNumberEncounterInt = 1; // inisialisasi untuk compare assert expected dan actual
 
-        String encounterId = encounterPage.getEncounterIdFromFirstRow();
-        Assert.assertEquals("ENCOUNTER.193", encounterId); // jika ada error ketika run code nya, ganti expected result nya sesuai row pertama tabel encounter
+        // looping array dari element <tr>
+        for (WebElement row : rows) {
+            String encounterNumber = row.findElement(By.xpath("./td[1]")).getText(); // mengambil element <td> kolom pertama
+            Assert.assertEquals(String.valueOf(expectedNumberEncounterInt), encounterNumber); // assert element nya
+            expectedNumberEncounterInt++; // mengupdate value dari variable tersebut dengan menambahkan 1 setiap loopingnya
+        }
 
         Thread.sleep(2000);
     }

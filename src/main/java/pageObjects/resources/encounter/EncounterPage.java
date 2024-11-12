@@ -37,9 +37,4 @@ public class EncounterPage {
         // disini menggunakan List<WebElement> karena di dalam baris memiliki beberapa <td> yang mempunyai tiap tiap value nya
     }
 
-    public String getEncounterIdFromFirstRow() {
-        // Mendapatkan teks Encounter ID dari sel tertentu di baris pertama tabel encounter
-        return driver.findElement(By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[3]/table/tbody/tr[1]/td[4]")).getText();
-    }
-
 }
