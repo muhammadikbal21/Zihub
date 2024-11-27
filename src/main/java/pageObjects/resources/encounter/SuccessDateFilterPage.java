@@ -21,6 +21,7 @@ public class SuccessDateFilterPage {
     By openToDatePicker = By.xpath("//div[contains(@class, 'flatpickr-calendar') and contains(@class, 'open')]");
     By selectToDate = By.xpath("//div[contains(@class, 'flatpickr-calendar') and contains(@class, 'open')]//span[contains(@class, 'flatpickr-day') and contains(@aria-label, 'November 3, 2024')]");
     By searchButton = By.xpath("//div/button[contains(@class, 'border') and contains(@type, 'submit')]");
+    By encounterTable = By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[3]/table");
     By encounterTableRows = By.xpath("//table[@class='min-w-full svelte-1vzd8ce']/tbody/tr"); // xpath ini mendapatkan semua row pada element yg sama (di element table)
 
     /*
@@ -33,32 +34,36 @@ public class SuccessDateFilterPage {
         6. /tr[1]: Memilih elemen baris pertama <tr> di dalam <tbody>.
      */
 
-    public void clickFromDateFilter() {
-        driver.findElement(fromDateFilter).click();
+    public By getFromDateFilter() {
+        return fromDateFilter;
     }
 
     public By getOpenFromDatePicker() {
         return openFromDatePicker;
     }
 
-    public void selectedFromDate() {
-        driver.findElement(selectFromDate).click();
+    public By getSelectFromDate() {
+        return selectFromDate;
     }
 
-    public void clickToDateFilter() {
-        driver.findElement(toDateFilter).click();
+    public By getToDateFilter() {
+        return toDateFilter;
     }
 
     public By getOpenToDatePicker() {
         return  openToDatePicker;
     }
 
-    public void selectedToDate() {
-        driver.findElement(selectToDate).click();
+    public By getSelectToDateElement() {
+        return selectToDate;
     }
 
-    public void clickSearchButton() {
-        driver.findElement(searchButton).click();
+    public By getSearchButton() {
+        return searchButton;
+    }
+
+    public By getEncounterTable() {
+        return encounterTable;
     }
 
     public List<WebElement> getEncounterTableRows() {

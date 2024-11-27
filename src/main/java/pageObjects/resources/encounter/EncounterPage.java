@@ -15,21 +15,25 @@ public class EncounterPage {
     }
 
     By resourcesButton = By.xpath("/html/body/div[1]/div[1]/div[1]/aside/div/div[1]/div[3]/button");
+    By encounterTitlePage = By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[1]/span"); // title halaman encounter
     By encounterSubMenu = By.xpath("/html/body/div[1]/div[1]/div[1]/aside/div/div[3]/div[2]");
-    By encounterTitle = By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[1]/span"); // title halaman encounter
+    By encounterTable = By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[3]/table");
     By encounterTableRows = By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[3]/table/tbody/tr"); // salah satu row pada tabel yg akan kita gunakan
 
-
-    public void clickResources() {
-        driver.findElement(resourcesButton).click();
+    public By getResourcesButton() {
+        return resourcesButton;
     }
 
-    public void clickEncounterSubMenu() {
-        driver.findElement(encounterSubMenu).click();
+    public By getEncounterTitlePage() {
+        return encounterTitlePage;
     }
 
-    public By getEncounterTitle() {
-        return encounterTitle;
+    public By getEncounterSubMenu() {
+        return  encounterSubMenu;
+    }
+
+    public By getEncounterTable() {
+        return encounterTable;
     }
 
     public List<WebElement> getEncounterTableRows() {

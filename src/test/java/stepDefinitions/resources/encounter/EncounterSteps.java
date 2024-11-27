@@ -24,26 +24,34 @@ public class EncounterSteps {
 
     @Given("user click resources menu")
     public void userClickResourcesMenu() {
-        encounterPage.clickResources();
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        WebElement resourceButtonElement = wait.until(ExpectedConditions.visibilityOfElementLocated(encounterPage.getResourcesButton()));
 
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(encounterPage.getEncounterTitle()));
+        resourceButtonElement.click();
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(encounterPage.getEncounterTitlePage()));
     }
 
     @And("user is on encounter sub menu")
     public void userIsOnEncounterSubMenu() {
-        encounterPage.clickEncounterSubMenu();
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        WebElement encounterSubMenuElement = wait.until(ExpectedConditions.visibilityOfElementLocated(encounterPage.getEncounterSubMenu()));
 
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(10));
+        encounterSubMenuElement.click();
+
         wait.until(ExpectedConditions.titleIs("Resources - Encounter | Zi.Hub"));
 
         String expectedTitle = "Resources - Encounter | Zi.Hub";
         String actualTitle = Hooks.driver.getTitle();
+
         Assert.assertEquals(expectedTitle, actualTitle);
     }
 
     @Then("user sees the list of encounter")
-    public void userSeesTheListOfEncounter() throws InterruptedException {
+    public void userSeesTheListOfEncounter() {
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(encounterPage.getEncounterTable()));
+
         List<WebElement> rows = encounterPage.getEncounterTableRows(); // Mengambil salah satu daftar baris dalam tabel dan menginisialisasi ke variable rows
         Assert.assertTrue("The Encounter list should not be empty", rows.size() > 0); // Mengecek apakah jumlah elemen di dalam rows lebih dari 0, yang berarti tabel Encounter berisi setidaknya satu baris
         int expectedNumberEncounterInt = 1; // inisialisasi untuk compare assert expected dan actual
@@ -54,8 +62,6 @@ public class EncounterSteps {
             Assert.assertEquals(String.valueOf(expectedNumberEncounterInt), encounterNumber); // assert element nya
             expectedNumberEncounterInt++; // mengupdate value dari variable tersebut dengan menambahkan 1 setiap loopingnya
         }
-
-        Thread.sleep(2000);
     }
 
 }

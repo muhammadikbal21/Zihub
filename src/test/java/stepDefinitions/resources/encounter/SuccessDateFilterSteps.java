@@ -26,44 +26,68 @@ public class SuccessDateFilterSteps {
 
     @Given("user click from date")
     public void userClickFromDate() {
-        successDateFilterPage.clickFromDateFilter();
-
         WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement datePicker = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getOpenFromDatePicker()));
+        WebElement fromDate = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getFromDateFilter()));
+        wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getFromDateFilter()));
 
+        fromDate.click();
+
+        WebElement datePicker = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getOpenFromDatePicker()));
         Assert.assertTrue("Date picker should be visible", datePicker.isDisplayed());
     }
 
     @And("user select from date")
-    public void userSelectFromDate() throws InterruptedException {
-        successDateFilterPage.selectedFromDate();
-        Thread.sleep(2000);
+    public void userSelectFromDate() {
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        WebElement selectDateElement = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getSelectFromDate()));
+        wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getSelectFromDate()));
+
+        String actualDate = selectDateElement.getAttribute("aria-label"); // mengambil value dari atribut aria-label
+        Assert.assertEquals("Tanggal yang dipilih tidak sesuai.", "November 1, 2024", actualDate);
+
+        selectDateElement.click(); // klik elementnya
     }
 
     @And("user click to date")
     public void userClickToDate() {
-        successDateFilterPage.clickToDateFilter();
-
         WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement datePicker = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getOpenToDatePicker()));
+        WebElement toDate = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getToDateFilter()));
+        wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getToDateFilter()));
 
+        toDate.click();
+
+        WebElement datePicker = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getOpenToDatePicker()));
         Assert.assertTrue("Date picker should be visible", datePicker.isDisplayed());
     }
 
     @And("user select to date")
-    public void userSelectToDate() throws InterruptedException {
-        successDateFilterPage.selectedToDate();
-        Thread.sleep(2000);
+    public void userSelectToDate() {
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        WebElement selectDateElement = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getSelectToDateElement()));
+        wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getSelectToDateElement()));
+
+        String actualDate = selectDateElement.getAttribute("aria-label"); // mengambil value dari atribut aria-label
+        Assert.assertEquals("Tanggal yang dipilih tidak sesuai.", "November 3, 2024", actualDate);
+
+        selectDateElement.click();
     }
 
     @And("user click search")
-    public void userClickSearch() throws InterruptedException {
-        successDateFilterPage.clickSearchButton();
-        Thread.sleep(5000);
+    public void userClickSearch() {
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        WebElement searchElement = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getSearchButton()));
+        wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getSearchButton()));
+
+        Assert.assertTrue("Search button should be clickable", searchElement.isEnabled());
+
+        searchElement.click();
     }
 
     @Then("user sees the list of encounter with date filter")
-    public void userSeesTheListOfEncounterWithDateFilter() throws InterruptedException {
+    public void userSeesTheListOfEncounterWithDateFilter() {
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getEncounterTable()));
+
         List<WebElement> rows = successDateFilterPage.getEncounterTableRows(); // membuat array list dengan banyak element rows di element table
         Assert.assertTrue("The Encounter list should not be empty", rows.size() > 0); // disini variable array rows sudah ada element nya di dalamnya
 
@@ -92,10 +116,5 @@ public class SuccessDateFilterSteps {
                     (encounterDate.isEqual(startDate) || encounterDate.isAfter(startDate)) &&
                             (encounterDate.isEqual(endDate) || encounterDate.isBefore(endDate)));
         }
-
-        Thread.sleep(5000);
     }
-
-
-
 }

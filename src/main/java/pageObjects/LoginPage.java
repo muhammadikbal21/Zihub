@@ -11,22 +11,34 @@ public class LoginPage {
         this.driver = driver;
     }
 
+    By loginImage = By.xpath("/html/body/div[1]/div[1]/div/img");
     By usernameField = By.id("username");
     By passwordField = By.id("password");
     By loginButton = By.xpath("/html/body/div[1]/div[1]/div/div[1]/form/button");
+    By dashboardTitlePage = By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[1]/div/span");
+    By zihubImage = By.xpath("/html/body/div[1]/header/nav/div[1]/a/img");
 
-    By imageLoginElement = By.xpath("/html/body/div[1]/div[1]/div/img");
-
-    public void enterUsername(String username) {
-        driver.findElement(usernameField).sendKeys(username);
+    public By getLoginImage() {
+        return loginImage;
     }
 
-    public void enterPassword(String password) {
-        driver.findElement(passwordField).sendKeys(password);
+    public By getUsernameField() {
+        return usernameField;
     }
 
-    public void clickLogin() {
-        driver.findElement(loginButton).click();
+    public By getPasswordField() {
+        return passwordField;
     }
 
+    public By getLoginButton() {
+        return loginButton;
+    }
+
+    public By getDashboardTitlePage() {
+        return dashboardTitlePage;
+    }
+
+    public By getZihubImage() {
+        return zihubImage;
+    }
 }

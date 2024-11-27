@@ -5,19 +5,14 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObjects.LoginPage;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class LoginSteps {
 
@@ -30,38 +25,58 @@ public class LoginSteps {
 
     @Given("user is on login page")
     public void userIsOnLoginPage() {
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        WebElement imageElement = wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getLoginImage()));
+
         String expectedTitle = "Zi.Hub | Login";
         String actualTitle = Hooks.driver.getTitle();
         Assert.assertEquals(expectedTitle, actualTitle);
 
-        WebElement image = Hooks.driver.findElement(By.xpath("/html/body/div[1]/div[1]/div/img"));
         String expectedSrc = "https://zihub-iris-dev.zicare.id/images/zihub-logo.svg";
-        String actualSrc = image.getAttribute("src");
+        String actualSrc = imageElement.getAttribute("src");
         Assert.assertEquals(actualSrc, expectedSrc);
     }
 
-    @When("input username")
-    public void inputUsername() {
-        loginPage.enterUsername("superAdmin");
+    @When("input username {string}")
+    public void inputUsername(String username) {
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        WebElement usernameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getUsernameField()));
+
+        usernameElement.sendKeys(username);
+
+        // ini berfungsi untuk mengambil nilai dari field username agar dapat diperiksa
+        String expectedUsernameInput = usernameElement.getAttribute("value");
+        Assert.assertEquals("Username input mismatch", expectedUsernameInput, username);
     }
 
-    @And("input password")
-    public void inputPassword() {
-        loginPage.enterPassword("admin");
+    @And("input password {string}")
+    public void inputPassword(String password) {
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        WebElement passwordElement = wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getPasswordField()));
+
+        passwordElement.sendKeys(password);
+
+        // ini mengecek apakah field password bertipe "password" (untuk memastikan teks disembunyikan)
+        boolean isPasswordType = "password".equals(passwordElement.getAttribute("type"));
+        // Asersi untuk memastikan password terisi
+        Assert.assertTrue("Password input mismatch", isPasswordType);
     }
 
     @And("click login button")
     public void clickLoginButton() {
-        loginPage.clickLogin();
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        WebElement loginButtonElement = wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getLoginButton()));
+
+        loginButtonElement.click();
 
         // Validasi bahwa login berhasil dengan menunggu elemen di halaman dashboard
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[1]/div/span")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getDashboardTitlePage()));
     }
 
     @Then("user is navigated to the home page")
-    public void userIsNavigatedToTheHomePage() throws InterruptedException {
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(10));
+    public void userIsNavigatedToTheHomePage() {
+        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
+        WebElement zihubImageElement = wait.until(ExpectedConditions.visibilityOfElementLocated(loginPage.getZihubImage()));
         // ini berfungsi agar value getTitle() tidak mengembalikan judul yang sebelumnya yaitu "Zi.Hub | Login"
         wait.until(ExpectedConditions.titleIs("Dashboard | Zi.Hub"));
 
@@ -69,11 +84,8 @@ public class LoginSteps {
         String actualTitle = Hooks.driver.getTitle();
         Assert.assertEquals(expectedTitle, actualTitle);
 
-        WebElement image = Hooks.driver.findElement(By.xpath("/html/body/div[1]/header/nav/div[1]/a/img"));
         String expectedSrc = "https://zihub-iris-dev.zicare.id/images/zihub-logo-small.svg";
-        String actualSrc = image.getAttribute("src");
+        String actualSrc = zihubImageElement.getAttribute("src");
         Assert.assertEquals(actualSrc, expectedSrc);
-
-        Thread.sleep(2000);
     }
 }
