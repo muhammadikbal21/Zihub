@@ -16,10 +16,10 @@ public class SuccessDateFilterPage {
 
     By fromDateFilter = By.xpath("//*[@id=\"startDateEl\"]");
     By openFromDatePicker = By.xpath("//div[contains(@class, 'flatpickr-calendar') and contains(@class, 'open')]"); // tidak bisa menambahkan contains style di xpath
-    By selectFromDate = By.xpath("//div[contains(@class, 'flatpickr-calendar') and contains(@class, 'open')]//span[contains(@class, 'flatpickr-day') and contains(@aria-label, 'November 1, 2024')]");
+    By selectFromDate = By.cssSelector("input#startDateEl.flatpickr-input");
     By toDateFilter = By.xpath("//*[@id=\"endDateEl\"]");
     By openToDatePicker = By.xpath("//div[contains(@class, 'flatpickr-calendar') and contains(@class, 'open')]");
-    By selectToDate = By.xpath("//div[contains(@class, 'flatpickr-calendar') and contains(@class, 'open')]//span[contains(@class, 'flatpickr-day') and contains(@aria-label, 'November 3, 2024')]");
+    By selectToDate = By.cssSelector("input#endDateEl.flatpickr-input");
     By searchButton = By.xpath("//div/button[contains(@class, 'border') and contains(@type, 'submit')]");
     By encounterTable = By.xpath("/html/body/div[1]/div[1]/div[2]/div/div[3]/table");
     By encounterTableRows = By.xpath("//table[@class='min-w-full svelte-1vzd8ce']/tbody/tr"); // xpath ini mendapatkan semua row pada element yg sama (di element table)

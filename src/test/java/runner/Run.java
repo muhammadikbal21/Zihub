@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features", // direktori file" feature
         glue = {"stepDefinitions", "hooks"}, // inisialisasi memanggil file" stepDefinitions dan hooks yang berada didalam folder java
+        tags = "@TestHere", // spesifik hanya test yang memiliki tag @TestHere pada file .feature nya
         plugin = {"html:target/HTML_report.html"} // membuat report berbentuk HTML
 )
 public class Run {

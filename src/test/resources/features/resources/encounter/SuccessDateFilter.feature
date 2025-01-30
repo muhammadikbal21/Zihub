@@ -10,6 +10,7 @@ Feature: Encounter List with Date Filter
     And user is on encounter sub menu
     Then user sees the list of encounter
 
+  @TestHere
   Scenario: User views the list of encounter with date filter
     Given user click from date
     And user select from date

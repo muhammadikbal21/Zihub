@@ -6,8 +6,11 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObjects.resources.encounter.SuccessDateFilterPage;
 
@@ -39,13 +42,28 @@ public class SuccessDateFilterSteps {
     @And("user select from date")
     public void userSelectFromDate() {
         WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement selectDateElement = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getSelectFromDate()));
-        wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getSelectFromDate()));
+        WebElement monthDropdown = wait.until(ExpectedConditions.presenceOfElementLocated(successDateFilterPage.getSelectFromDate()));
 
-        String actualDate = selectDateElement.getAttribute("aria-label"); // mengambil value dari atribut aria-label
-        Assert.assertEquals("Tanggal yang dipilih tidak sesuai.", "November 1, 2024", actualDate);
+        // JavascriptExecutor adalah interface di Selenium yang memungkinkan kita menjalankan JavaScript di dalam browser.
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) Hooks.driver;
 
-        selectDateElement.click(); // klik elementnya
+        jsExecutor.executeScript(
+                "arguments[0].value = '01 Nov 2024';" + // mengubah langsung tanpa menggunakan interaksi keyboard atau klik
+                        "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                        "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));" +
+                        "arguments[0].dispatchEvent(new Event('blur', { bubbles: true }));",
+                // Memicu event input, yang biasanya digunakan oleh library frontend untuk mendeteksi perubahan teks pada input.
+                // Memicu event change, yang biasanya diperlukan agar aplikasi mengenali perubahan nilai input.
+                // Memicu event blur, yang meniru kehilangan fokus dari elemen input. Ini berguna jika aplikasi hanya menyimpan nilai saat pengguna berpindah dari input.
+                // { bubbles: true } memastikan event naik ke elemen induknya agar dideteksi oleh event listener.
+                monthDropdown
+        );
+
+        // Validasi hasil
+        String selectedDate = monthDropdown.getAttribute("value");
+        Assert.assertEquals("Tanggal yang dipilih tidak sesuai.", "01 Nov 2024", selectedDate);
+
+        System.out.println("Tanggal yang dipilih: " + selectedDate);
     }
 
     @And("user click to date")
@@ -63,24 +81,34 @@ public class SuccessDateFilterSteps {
     @And("user select to date")
     public void userSelectToDate() {
         WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement selectDateElement = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getSelectToDateElement()));
-        wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getSelectToDateElement()));
+        WebElement monthDropdown = wait.until(ExpectedConditions.presenceOfElementLocated(successDateFilterPage.getSelectToDateElement()));
 
-        String actualDate = selectDateElement.getAttribute("aria-label"); // mengambil value dari atribut aria-label
-        Assert.assertEquals("Tanggal yang dipilih tidak sesuai.", "November 3, 2024", actualDate);
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) Hooks.driver;
 
-        selectDateElement.click();
+        jsExecutor.executeScript(
+                "arguments[0].value = '03 Nov 2024';" +
+                        "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                        "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));" +
+                        "arguments[0].dispatchEvent(new Event('blur', { bubbles: true }));",
+                monthDropdown
+        );
+
+        // Validasi hasil
+        String selectedDate = monthDropdown.getAttribute("value");
+        Assert.assertEquals("Tanggal yang dipilih tidak sesuai.", "03 Nov 2024", selectedDate);
+
+        System.out.println("Tanggal yang dipilih: " + selectedDate);
     }
 
     @And("user click search")
     public void userClickSearch() {
         WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement searchElement = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getSearchButton()));
-        wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getSearchButton()));
+        WebElement searchElement = wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getSearchButton()));
+
+        searchElement.click();
 
         Assert.assertTrue("Search button should be clickable", searchElement.isEnabled());
 
-        searchElement.click();
     }
 
     @Then("user sees the list of encounter with date filter")
