@@ -61,7 +61,7 @@ public class AddEncounterByUploadSteps {
         Menghapus kelas CSS hidden dari elemen.
          */
 
-        String filePath = "/Users/muhammadikbal/Downloads/EncounterData.csv";
+        String filePath = "/Users/muhammadikbal/Documents/Ikbal/Project/Selenium/Zihub/src/test/resources/testfiles/EncounterData.csv";
         uploadCsvButtonElement.sendKeys(filePath);
 
         WebElement fileNameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(addEncounterByUploadPage.getFileName()));
