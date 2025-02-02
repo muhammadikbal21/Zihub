@@ -6,6 +6,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import utils.WaitUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +23,7 @@ public class Hooks {
         driver.manage().window().maximize();
         driver.get(baseUrl);
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        WaitUtils.setDriver(driver);
     }
 
     @After

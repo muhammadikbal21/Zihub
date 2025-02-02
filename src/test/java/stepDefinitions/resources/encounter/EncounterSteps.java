@@ -6,10 +6,12 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObjects.resources.encounter.EncounterPage;
+import utils.WaitUtils;
 
 import java.time.Duration;
 import java.util.List;
@@ -18,39 +20,38 @@ public class EncounterSteps {
 
     private EncounterPage encounterPage;
 
+    private WebDriver driver = Hooks.driver;
+
     public EncounterSteps() {
-        this.encounterPage = new EncounterPage(Hooks.driver);
+        this.encounterPage = new EncounterPage(driver);
     }
 
     @Given("user click resources menu")
     public void userClickResourcesMenu() {
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement resourceButtonElement = wait.until(ExpectedConditions.visibilityOfElementLocated(encounterPage.getResourcesButton()));
+        WebElement resourceButtonElement = WaitUtils.waitForElementToBeVisible(encounterPage.getResourcesButton());
 
         resourceButtonElement.click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(encounterPage.getEncounterTitlePage()));
+        WaitUtils.waitForElementToBeVisible(encounterPage.getEncounterTitlePage());
     }
 
     @And("user is on encounter sub menu")
     public void userIsOnEncounterSubMenu() {
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement encounterSubMenuElement = wait.until(ExpectedConditions.visibilityOfElementLocated(encounterPage.getEncounterSubMenu()));
+        WebElement encounterSubMenuElement = WaitUtils.waitForElementToBeVisible(encounterPage.getEncounterSubMenu());
 
         encounterSubMenuElement.click();
 
-        wait.until(ExpectedConditions.titleIs("Resources - Encounter | Zi.Hub"));
+        WaitUtils.waitForTitle("Resources - Encounter | Zi.Hub");
 
         String expectedTitle = "Resources - Encounter | Zi.Hub";
-        String actualTitle = Hooks.driver.getTitle();
+        String actualTitle = driver.getTitle();
 
         Assert.assertEquals(expectedTitle, actualTitle);
     }
 
     @Then("user sees the list of encounter")
     public void userSeesTheListOfEncounter() {
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(encounterPage.getEncounterTable()));
+        WaitUtils.waitForElementToBeVisible(encounterPage.getEncounterTable());
 
         List<WebElement> rows = encounterPage.getEncounterTableRows(); // Mengambil salah satu daftar baris dalam tabel dan menginisialisasi ke variable rows
         Assert.assertTrue("The Encounter list should not be empty", rows.size() > 0); // Mengecek apakah jumlah elemen di dalam rows lebih dari 0, yang berarti tabel Encounter berisi setidaknya satu baris

@@ -7,12 +7,14 @@ import io.cucumber.java.en.Then;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObjects.resources.encounter.SuccessDateFilterPage;
+import utils.WaitUtils;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -23,29 +25,29 @@ public class SuccessDateFilterSteps {
 
     private SuccessDateFilterPage successDateFilterPage;
 
+    private WebDriver driver = Hooks.driver;
+
     public SuccessDateFilterSteps() {
-        this.successDateFilterPage = new SuccessDateFilterPage(Hooks.driver);
+        this.successDateFilterPage = new SuccessDateFilterPage(driver);
     }
 
     @Given("user click from date")
     public void userClickFromDate() {
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement fromDate = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getFromDateFilter()));
-        wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getFromDateFilter()));
+        WebElement fromDate = WaitUtils.waitForElementToBeVisible(successDateFilterPage.getFromDateFilter());
+        WaitUtils.waitForElementToBeClickable(successDateFilterPage.getFromDateFilter());
 
         fromDate.click();
 
-        WebElement datePicker = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getOpenFromDatePicker()));
+        WebElement datePicker = WaitUtils.waitForElementToBeVisible(successDateFilterPage.getOpenFromDatePicker());
         Assert.assertTrue("Date picker should be visible", datePicker.isDisplayed());
     }
 
     @And("user select from date")
     public void userSelectFromDate() {
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement monthDropdown = wait.until(ExpectedConditions.presenceOfElementLocated(successDateFilterPage.getSelectFromDate()));
+        WebElement monthDropdown = WaitUtils.waitForElementToPresence(successDateFilterPage.getSelectFromDate());
 
         // JavascriptExecutor adalah interface di Selenium yang memungkinkan kita menjalankan JavaScript di dalam browser.
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) Hooks.driver;
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 
         jsExecutor.executeScript(
                 "arguments[0].value = '01 Nov 2024';" + // mengubah langsung tanpa menggunakan interaksi keyboard atau klik
@@ -68,22 +70,20 @@ public class SuccessDateFilterSteps {
 
     @And("user click to date")
     public void userClickToDate() {
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement toDate = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getToDateFilter()));
-        wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getToDateFilter()));
+        WebElement toDate = WaitUtils.waitForElementToBeVisible(successDateFilterPage.getToDateFilter());
+        WaitUtils.waitForElementToBeClickable(successDateFilterPage.getToDateFilter());
 
         toDate.click();
 
-        WebElement datePicker = wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getOpenToDatePicker()));
+        WebElement datePicker = WaitUtils.waitForElementToBeVisible(successDateFilterPage.getOpenToDatePicker());
         Assert.assertTrue("Date picker should be visible", datePicker.isDisplayed());
     }
 
     @And("user select to date")
     public void userSelectToDate() {
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement monthDropdown = wait.until(ExpectedConditions.presenceOfElementLocated(successDateFilterPage.getSelectToDateElement()));
+        WebElement monthDropdown = WaitUtils.waitForElementToPresence(successDateFilterPage.getSelectToDateElement());
 
-        JavascriptExecutor jsExecutor = (JavascriptExecutor) Hooks.driver;
+        JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 
         jsExecutor.executeScript(
                 "arguments[0].value = '03 Nov 2024';" +
@@ -102,8 +102,7 @@ public class SuccessDateFilterSteps {
 
     @And("user click search")
     public void userClickSearch() {
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        WebElement searchElement = wait.until(ExpectedConditions.elementToBeClickable(successDateFilterPage.getSearchButton()));
+        WebElement searchElement = WaitUtils.waitForElementToBeClickable(successDateFilterPage.getSearchButton());
 
         searchElement.click();
 
@@ -113,8 +112,7 @@ public class SuccessDateFilterSteps {
 
     @Then("user sees the list of encounter with date filter")
     public void userSeesTheListOfEncounterWithDateFilter() {
-        WebDriverWait wait = new WebDriverWait(Hooks.driver, Duration.ofSeconds(15));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(successDateFilterPage.getEncounterTable()));
+        WaitUtils.waitForElementToBeVisible(successDateFilterPage.getEncounterTable());
 
         List<WebElement> rows = successDateFilterPage.getEncounterTableRows(); // membuat array list dengan banyak element rows di element table
         Assert.assertTrue("The Encounter list should not be empty", rows.size() > 0); // disini variable array rows sudah ada element nya di dalamnya
