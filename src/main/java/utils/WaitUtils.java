@@ -50,4 +50,24 @@ public class WaitUtils {
         getWait().until(ExpectedConditions.alertIsPresent());
     }
 
+    public static void waitForElementToHaveText(WebElement element) {
+        getWait().until(driver -> !element.getText().trim().isEmpty());
+    }
+    // driver -> = ini adalah bentuk lambda function yang mana driver adalah parameter yang mewakili instance WebDriver.
+    // trim() = Hilangkan spasi di awal/akhir teks.
+    // isEmpty() = Mengecek apakah teks kosong, jika kosong berarti nilai nya true
+    // !element.getText().trim().isEmpty() = kondisi apakah element tersebut kosong, tetapi kita bikin negasi yang isEmpty awalnya true menjadi false dan sebaliknya
+    // !isEmpty() → Kalo kosong (false, karena ada negasi) dia tetap menunggu, tapi jika tidak kosong (true) dia akan berhenti
+
+    public static void waitForElementToHaveText(String text) {
+        getWait().until(driver -> text != null && !text.trim().isEmpty());
+    }
+    // text != null → Pastikan teks tidak null (tidak ada isinya sama sekali).
+    // && → kedua kondisi harus benar benar true agar dapat lanjut ke berikutnya
+    /*
+        !text.trim().isEmpty() →
+            .trim() → Menghapus spasi di awal dan akhir teks.
+            .isEmpty() → Mengecek apakah teks kosong ("").
+            ! (negasi) → Berarti kondisi ini harus FALSE, alias teks tidak boleh kosong.
+     */
 }

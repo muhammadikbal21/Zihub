@@ -10,7 +10,7 @@ Feature: Add Encounter By Upload CSV
     And user is on encounter sub menu
     Then user sees the list of encounter
 
-  @TestHere
+#  @TestHere
   Scenario: User success add encounter by upload
     Given user click add data button
     And user click import csv tab
